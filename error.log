@@ -1,0 +1,8 @@
+{"level":"error","message":"testError","stack":"Error\n    at /home/jacques/Documents/code/goloan-user-service/dist/api/routes/home.js:22:15\n    at Generator.next (<anonymous>)\n    at /home/jacques/Documents/code/goloan-user-service/dist/api/routes/home.js:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (/home/jacques/Documents/code/goloan-user-service/dist/api/routes/home.js:4:12)\n    at /home/jacques/Documents/code/goloan-user-service/dist/api/routes/home.js:20:32\n    at newFn (/home/jacques/Documents/code/goloan-user-service/node_modules/express-async-errors/index.js:16:20)\n    at Layer.handle [as handle_request] (/home/jacques/Documents/code/goloan-user-service/node_modules/express/lib/router/layer.js:95:5)\n    at next (/home/jacques/Documents/code/goloan-user-service/node_modules/express/lib/router/route.js:137:13)\n    at Route.dispatch (/home/jacques/Documents/code/goloan-user-service/node_modules/express/lib/router/route.js:112:3)"}
+{"level":"error"}
+{"message":{},"level":"error"}
+{"message":{},"level":"error"}
+{"message":{},"level":"error"}
+{"message":{},"level":"error"}
+{"message":{},"level":"error"}
+{"message":{},"level":"error"}
