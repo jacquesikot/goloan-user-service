@@ -10,7 +10,7 @@ const userServiceDepenedencies: IUserService = {
 
 const userServiceInstance = userService(userServiceDepenedencies);
 
-export default {
+export const container = {
   prisma: prisma,
   logger: logger,
   userService: userServiceInstance,

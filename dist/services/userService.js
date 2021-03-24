@@ -97,7 +97,6 @@ const userService = ({ prisma, logger }) => {
             });
             if (user)
                 return user;
-            return [];
         }
         catch (error) {
             logger.error(error);
