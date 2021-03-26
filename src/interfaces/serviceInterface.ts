@@ -1,5 +1,5 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import winston from 'winston';
+import * as winston from 'winston';
 
 interface IServiceInterface {
   prisma: PrismaClient<

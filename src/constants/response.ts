@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const collection = (data: any, offset?: string, per_page?: string) => {
   const response = {
     type: 'collection',

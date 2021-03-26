@@ -1,12 +1,12 @@
 require('express-async-errors');
-import express from 'express';
+import * as express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 
 import logger from './logger';
 
-export default (app: any) => {
+export default (app: express.Application) => {
   //Middlewares
   app.use(cors());
   app.use(helmet());

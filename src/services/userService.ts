@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { IUser, IServiceInterface } from '../interfaces';
 
 const userService = ({ prisma, logger }: IServiceInterface) => {
@@ -38,8 +38,8 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
       pin,
     } = user;
 
-    const safePassword = (await hashValue(password))!.toString();
-    const safePin = (await hashValue(pin))!.toString();
+    const safePassword = (await hashValue(password))?.toString();
+    const safePin = (await hashValue(pin))?.toString();
 
     try {
       const user = prisma.users.create({

@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-require('express-async-errors');
 const loaders_1 = require("../loaders");
 const constants_1 = require("../constants");
 exports.default = (error, _req, res, _next) => {

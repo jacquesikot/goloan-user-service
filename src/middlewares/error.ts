@@ -1,11 +1,11 @@
-require('express-async-errors');
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response, NextFunction } from 'express';
 
 import { logger } from '../loaders';
 import { errorEnvelope, errorMessage } from '../constants';
 
 export default (
-  error: any,
+  error: Error,
   _req: Request,
   res: Response,
   _next: NextFunction

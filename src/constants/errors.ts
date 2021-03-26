@@ -1,3 +1,5 @@
+import * as Joi from 'joi';
+
 const errorMessage = {
   noDatabaseConnection: 'Could not connect to the database',
   internalServerError: 'Oops, something went wrong. Internal Server Error',
@@ -8,11 +10,11 @@ const errorMessage = {
 };
 
 const errorEnvelope = {
-  invalidRequest: (error: any) => {
+  invalidRequest: (error: Joi.ValidationError) => {
     return {
-      message: error[0].message,
-      field: error[0].context.label,
-      type: error[0].type,
+      message: error.details[0].message,
+      field: error.details[0].context.label,
+      type: error.details[0].type,
     };
   },
 

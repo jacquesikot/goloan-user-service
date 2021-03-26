@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import * as express from 'express';
 import * as _ from 'lodash';
 
 import { container } from '../../loaders/serviceContainer';
@@ -7,12 +7,10 @@ import { errorEnvelope, errorMessage, responseEnvelope } from '../../constants';
 
 const router = express.Router();
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', async (req: express.Request, res: express.Response) => {
   const validation = userValidation(req.body);
   if (validation.error)
-    return res
-      .status(400)
-      .send(errorEnvelope.invalidRequest(validation.error.details));
+    return res.status(400).send(errorEnvelope.invalidRequest(validation.error));
 
   const existingUser = await container.userService.checkIfUserExists(
     req.body.email
@@ -41,7 +39,7 @@ router.post('/', async (req: Request, res: Response) => {
     );
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', async (req: express.Request, res: express.Response) => {
   const user = await container.userService.getUserById(req.params.id);
   if (!user)
     return res

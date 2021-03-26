@@ -1,7 +1,7 @@
 import logger from './logger';
 import { prisma } from './database';
 import { userService } from '../services';
-import { IServiceInterface } from 'interfaces';
+import { IServiceInterface } from '../interfaces';
 
 const userServiceDepenedencies: IServiceInterface = {
   prisma,

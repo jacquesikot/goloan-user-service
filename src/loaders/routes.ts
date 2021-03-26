@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 
 import endpoints from '../api/endpoints';
 import { home, users } from '../api';

@@ -1,32 +1,39 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcrypt = __importStar(require("bcrypt"));
 const userService = ({ prisma, logger }) => {
-    const hashValue = (value) => __awaiter(void 0, void 0, void 0, function* () {
+    const hashValue = async (value) => {
         try {
-            const salt = yield bcrypt_1.default.genSalt(10);
-            const hashedValue = yield bcrypt_1.default.hash(value, salt);
+            const salt = await bcrypt.genSalt(10);
+            const hashedValue = await bcrypt.hash(value, salt);
             return hashedValue;
         }
         catch (error) {
             logger.error(error);
         }
-    });
-    const validatePassword = (givenPassword, userPassword) => __awaiter(void 0, void 0, void 0, function* () {
+    };
+    const validatePassword = async (givenPassword, userPassword) => {
         try {
-            const validPassword = yield bcrypt_1.default.compare(givenPassword, userPassword);
+            const validPassword = await bcrypt.compare(givenPassword, userPassword);
             if (!validPassword)
                 return false;
             return true;
@@ -34,11 +41,12 @@ const userService = ({ prisma, logger }) => {
         catch (error) {
             logger.error(error);
         }
-    });
-    const createUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    };
+    const createUser = async (user) => {
+        var _a, _b;
         const { first_name, last_name, phone_number, email, gender, bvn, user_type, password, pin, } = user;
-        const safePassword = (yield hashValue(password)).toString();
-        const safePin = (yield hashValue(pin)).toString();
+        const safePassword = (_a = (await hashValue(password))) === null || _a === void 0 ? void 0 : _a.toString();
+        const safePin = (_b = (await hashValue(pin))) === null || _b === void 0 ? void 0 : _b.toString();
         try {
             const user = prisma.users.create({
                 data: {
@@ -59,10 +67,10 @@ const userService = ({ prisma, logger }) => {
         catch (error) {
             logger.error(error);
         }
-    });
-    const checkIfUserExists = (user_email) => __awaiter(void 0, void 0, void 0, function* () {
+    };
+    const checkIfUserExists = async (user_email) => {
         try {
-            const foundUser = yield prisma.users.findUnique({
+            const foundUser = await prisma.users.findUnique({
                 where: {
                     email: user_email,
                 },
@@ -74,8 +82,8 @@ const userService = ({ prisma, logger }) => {
         catch (error) {
             logger.error(error);
         }
-    });
-    const findUserByEmail = (user_email) => __awaiter(void 0, void 0, void 0, function* () {
+    };
+    const findUserByEmail = async (user_email) => {
         try {
             const user = prisma.users.findUnique({
                 where: {
@@ -87,8 +95,8 @@ const userService = ({ prisma, logger }) => {
         catch (error) {
             logger.error(error);
         }
-    });
-    const getUserById = (user_id) => __awaiter(void 0, void 0, void 0, function* () {
+    };
+    const getUserById = async (user_id) => {
         try {
             const user = prisma.users.findUnique({
                 where: {
@@ -101,7 +109,7 @@ const userService = ({ prisma, logger }) => {
         catch (error) {
             logger.error(error);
         }
-    });
+    };
     return {
         hashValue,
         validatePassword,

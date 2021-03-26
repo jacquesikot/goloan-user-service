@@ -13,9 +13,9 @@ exports.errorMessage = errorMessage;
 const errorEnvelope = {
     invalidRequest: (error) => {
         return {
-            message: error[0].message,
-            field: error[0].context.label,
-            type: error[0].type,
+            message: error.details[0].message,
+            field: error.details[0].context.label,
+            type: error.details[0].type,
         };
     },
     genericError: (message, code) => {
