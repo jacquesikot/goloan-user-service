@@ -7,7 +7,7 @@ import config from '../../src/config';
 describe('masterAuth', () => {
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
-  let mockNextFunction = jest.fn();
+  const mockNextFunction = jest.fn();
 
   beforeEach(() => {
     mockResponse = {
@@ -21,15 +21,11 @@ describe('masterAuth', () => {
       headers: {},
     };
 
-    masterAuth(
-      mockRequest as Request,
-      mockResponse as Response,
-      mockNextFunction
-    );
+    masterAuth(mockRequest as Request, mockResponse as Response, mockNextFunction);
 
     expect(mockResponse.json).toBeCalledWith({
       message: errorMessage.noMasterKey,
-      code: 401,
+      code: 403,
     });
   });
 
@@ -40,11 +36,7 @@ describe('masterAuth', () => {
       },
     };
 
-    masterAuth(
-      mockRequest as Request,
-      mockResponse as Response,
-      mockNextFunction
-    );
+    masterAuth(mockRequest as Request, mockResponse as Response, mockNextFunction);
 
     expect(mockResponse.json).toBeCalledWith({
       message: errorMessage.invalidMasterKey,
@@ -59,11 +51,7 @@ describe('masterAuth', () => {
       },
     };
 
-    masterAuth(
-      mockRequest as Request,
-      mockResponse as Response,
-      mockNextFunction
-    );
+    masterAuth(mockRequest as Request, mockResponse as Response, mockNextFunction);
 
     expect(mockNextFunction).toBeCalledTimes(1);
   });

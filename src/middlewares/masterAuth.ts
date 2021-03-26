@@ -7,7 +7,7 @@ const masterAuth = (req: Request, res: Response, next: NextFunction) => {
   const key = req.headers[httpHeaders.masterKey];
 
   if (!key) {
-    const code = 401;
+    const code = 403;
     res.status(code);
     res.json(errorEnvelope.genericError(errorMessage.noMasterKey, code));
     return;

@@ -5,7 +5,7 @@ const errorMessage = {
     noDatabaseConnection: 'Could not connect to the database',
     internalServerError: 'Oops, something went wrong. Internal Server Error',
     invalidMasterKey: 'Invalid master key',
-    noMasterKey: 'No master key provided',
+    noMasterKey: 'Access Forbidden',
     userAlreadyRegistered: 'User with the given ID is already regisered',
     userDoesNotExist: 'User with given ID does not exist',
 };
