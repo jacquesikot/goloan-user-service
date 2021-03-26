@@ -11,5 +11,6 @@ if (envFound.error && process.env.NODE_ENV === 'development') {
 exports.default = {
     port: parseInt(process.env.PORT, 3000),
     masterKey: process.env.MASTER_KEY ? process.env.MASTER_KEY : '',
+    mailgunApiKey: process.env.MAILGUN_API_KEY ? process.env.MAILGUN_API_KEY : '',
 };
 //# sourceMappingURL=index.js.map

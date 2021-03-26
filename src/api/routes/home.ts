@@ -3,7 +3,7 @@ import express from 'express';
 const router = express.Router();
 
 router.get('/', async (_req, res) => {
-  res.send('Server Live');
+  res.send('ok');
 });
 
 export default router;

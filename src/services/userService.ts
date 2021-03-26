@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
-import { IUser, IUserService } from '../interfaces';
+import { IUser, IServiceInterface } from '../interfaces';
 
-const userService = ({ prisma, logger }: IUserService) => {
+const userService = ({ prisma, logger }: IServiceInterface) => {
   const hashValue = async (value: string) => {
     try {
       const salt = await bcrypt.genSalt(10);

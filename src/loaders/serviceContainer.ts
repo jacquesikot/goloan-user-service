@@ -1,9 +1,9 @@
 import logger from './logger';
 import { prisma } from './database';
 import { userService } from '../services';
-import { IUserService } from 'interfaces';
+import { IServiceInterface } from 'interfaces';
 
-const userServiceDepenedencies: IUserService = {
+const userServiceDepenedencies: IServiceInterface = {
   prisma,
   logger,
 };

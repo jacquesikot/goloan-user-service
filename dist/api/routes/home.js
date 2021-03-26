@@ -13,9 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const mailService_1 = __importDefault(require("../../services/mailService"));
 const router = express_1.default.Router();
 router.get('/', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('Server Live');
+    yield mailService_1.default().sendMail();
+    res.send('ok');
 }));
 exports.default = router;
 //# sourceMappingURL=home.js.map

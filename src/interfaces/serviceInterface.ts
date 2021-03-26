@@ -1,7 +1,7 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import winston from 'winston';
 
-interface IUserService {
+interface IServiceInterface {
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,
     never,
@@ -10,4 +10,4 @@ interface IUserService {
   logger: winston.Logger;
 }
 
-export default IUserService;
+export default IServiceInterface;

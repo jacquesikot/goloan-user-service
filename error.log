@@ -6,3 +6,4 @@
 {"message":{},"level":"error"}
 {"message":{},"level":"error"}
 {"message":{},"level":"error"}
+{"message":"Could not connect to the database","level":"error"}

@@ -1,2 +1,3 @@
 export { default as IUser } from './userInterface';
-export { default as IUserService } from './userServiceInterface';
+export { default as IAccount } from './accountInterface';
+export { default as IServiceInterface } from './serviceInterface';
