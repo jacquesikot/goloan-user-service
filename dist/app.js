@@ -18,6 +18,6 @@ process.on('unhandledRejection', (ex) => {
     throw ex;
 });
 const PORT = process.env.PORT || config_1.default.port;
-const server = app.listen(PORT, () => loaders_1.logger.info(`🛡️  User Service listening on port: ${PORT} 🛡️`));
+const server = app.listen(PORT, () => loaders_1.logger.info(`🛡️  User Service listening on PORT: ${PORT} 🛡️`));
 exports.default = server;
 //# sourceMappingURL=app.js.map
