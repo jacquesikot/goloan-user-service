@@ -13,9 +13,9 @@ require('./loaders/express').default(app);
 require('./loaders/routes').default(app);
 
 app.use(error);
-process.on('unhandledRejection', (ex) => {
-  throw ex;
-});
+// process.on('unhandledRejection', (ex) => {
+//   throw ex;
+// });
 
 const PORT = process.env.PORT || config.port;
 

@@ -14,9 +14,9 @@ require('./loaders/database').default();
 require('./loaders/express').default(app);
 require('./loaders/routes').default(app);
 app.use(middlewares_1.error);
-process.on('unhandledRejection', (ex) => {
-    throw ex;
-});
+// process.on('unhandledRejection', (ex) => {
+//   throw ex;
+// });
 const PORT = process.env.PORT || config_1.default.port;
 const server = app.listen(PORT, () => loaders_1.logger.info(`🛡️  User Service listening on PORT: ${PORT} 🛡️`));
 exports.default = server;
