@@ -43,10 +43,11 @@ const userService = ({ prisma, logger }) => {
         }
     };
     const createUser = async (user) => {
-        var _a, _b;
-        const { first_name, last_name, phone_number, email, gender, bvn, user_type, password, pin, } = user;
+        var _a;
+        const { first_name, last_name, phone_number, email, gender, user_type, password } = user;
         const safePassword = (_a = (await hashValue(password))) === null || _a === void 0 ? void 0 : _a.toString();
-        const safePin = (_b = (await hashValue(pin))) === null || _b === void 0 ? void 0 : _b.toString();
+        // Sort out user types
+        const userType = user_type ? user_type : 'standard';
         try {
             const user = prisma.users.create({
                 data: {
@@ -55,10 +56,8 @@ const userService = ({ prisma, logger }) => {
                     phone_number,
                     email,
                     password: safePassword,
-                    pin: safePin,
                     gender,
-                    bvn,
-                    user_type,
+                    user_type: userType,
                     created_at: new Date().toISOString(),
                 },
             });
@@ -110,6 +109,54 @@ const userService = ({ prisma, logger }) => {
             logger.error(error);
         }
     };
+    const modifiedValue = (modified) => {
+        if (modified !== null) {
+            const value = Number(modified) + 1;
+            return value.toString();
+        }
+        else
+            return '1';
+    };
+    const updateKYC = async ({ id, gender, year_of_birth, relationship_status, bvn, modified }) => {
+        try {
+            const updatedUser = await prisma.users.update({
+                where: {
+                    id,
+                },
+                data: {
+                    bvn,
+                    gender,
+                    year_of_birth,
+                    relationship_status,
+                    updated_at: new Date().toISOString(),
+                    modified: modifiedValue(modified),
+                },
+            });
+            return updatedUser;
+        }
+        catch (error) {
+            logger.error(error);
+        }
+    };
+    const addPin = async ({ id, pin, modified }) => {
+        const safePin = await hashValue(pin);
+        try {
+            const updatedUser = await prisma.users.update({
+                where: {
+                    id,
+                },
+                data: {
+                    pin: safePin,
+                    updated_at: new Date().toISOString(),
+                    modified: modifiedValue(modified),
+                },
+            });
+            return updatedUser;
+        }
+        catch (error) {
+            logger.error(error);
+        }
+    };
     return {
         hashValue,
         validatePassword,
@@ -117,6 +164,8 @@ const userService = ({ prisma, logger }) => {
         checkIfUserExists,
         findUserByEmail,
         getUserById,
+        updateKYC,
+        addPin,
     };
 };
 exports.default = userService;

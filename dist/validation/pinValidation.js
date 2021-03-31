@@ -20,16 +20,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Joi = __importStar(require("joi"));
-const validateUser = (user) => {
+const validatePin = (user) => {
     const schema = Joi.object({
-        first_name: Joi.string().min(2).max(30).required(),
-        last_name: Joi.string().min(2).max(30).required(),
-        phone_number: Joi.string().min(13).max(21).required(),
-        email: Joi.string().email().required(),
-        password: Joi.string().min(5).max(12).required(),
-        user_type: Joi.string().min(1).max(1),
+        id: Joi.string().required(),
+        pin: Joi.string().min(4).max(4).required(),
+        modified: Joi.required(),
     });
     return schema.validate(user);
 };
-exports.default = validateUser;
-//# sourceMappingURL=userValidation.js.map
+exports.default = validatePin;
+//# sourceMappingURL=pinValidation.js.map

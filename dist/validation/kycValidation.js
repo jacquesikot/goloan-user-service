@@ -20,16 +20,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Joi = __importStar(require("joi"));
-const validateUser = (user) => {
+const validateKyc = (kyc) => {
     const schema = Joi.object({
-        first_name: Joi.string().min(2).max(30).required(),
-        last_name: Joi.string().min(2).max(30).required(),
-        phone_number: Joi.string().min(13).max(21).required(),
-        email: Joi.string().email().required(),
-        password: Joi.string().min(5).max(12).required(),
-        user_type: Joi.string().min(1).max(1),
+        id: Joi.string().required(),
+        modified: Joi.required(),
+        gender: Joi.string().min(4).max(6).required(),
+        year_of_birth: Joi.string().required(),
+        relationship_status: Joi.string().required(),
+        bvn: Joi.string().min(10).max(10).required(),
     });
-    return schema.validate(user);
+    return schema.validate(kyc);
 };
-exports.default = validateUser;
-//# sourceMappingURL=userValidation.js.map
+exports.default = validateKyc;
+//# sourceMappingURL=kycValidation.js.map

@@ -12,10 +12,7 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
     }
   };
 
-  const validatePassword = async (
-    givenPassword: string,
-    userPassword: string
-  ) => {
+  const validatePassword = async (givenPassword: string, userPassword: string) => {
     try {
       const validPassword = await bcrypt.compare(givenPassword, userPassword);
       if (!validPassword) return false;
@@ -26,20 +23,11 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
   };
 
   const createUser = async (user: IUser) => {
-    const {
-      first_name,
-      last_name,
-      phone_number,
-      email,
-      gender,
-      bvn,
-      user_type,
-      password,
-      pin,
-    } = user;
+    const { first_name, last_name, phone_number, email, gender, user_type, password } = user;
 
     const safePassword = (await hashValue(password))?.toString();
-    const safePin = (await hashValue(pin))?.toString();
+    // Sort out user types
+    const userType = user_type ? user_type : 'standard';
 
     try {
       const user = prisma.users.create({
@@ -49,10 +37,8 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
           phone_number,
           email,
           password: safePassword,
-          pin: safePin,
           gender,
-          bvn,
-          user_type,
+          user_type: userType,
           created_at: new Date().toISOString(),
         },
       });
@@ -104,6 +90,53 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
     }
   };
 
+  const modifiedValue = (modified: string) => {
+    if (modified !== null) {
+      const value = Number(modified) + 1;
+      return value.toString();
+    } else return '1';
+  };
+
+  const updateKYC = async ({ id, gender, year_of_birth, relationship_status, bvn, modified }: Partial<IUser>) => {
+    try {
+      const updatedUser = await prisma.users.update({
+        where: {
+          id,
+        },
+        data: {
+          bvn,
+          gender,
+          year_of_birth,
+          relationship_status,
+          updated_at: new Date().toISOString(),
+          modified: modifiedValue(modified),
+        },
+      });
+      return updatedUser;
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const addPin = async ({ id, pin, modified }: Partial<IUser>) => {
+    const safePin = await hashValue(pin);
+    try {
+      const updatedUser = await prisma.users.update({
+        where: {
+          id,
+        },
+        data: {
+          pin: safePin,
+          updated_at: new Date().toISOString(),
+          modified: modifiedValue(modified),
+        },
+      });
+      return updatedUser;
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
   return {
     hashValue,
     validatePassword,
@@ -111,6 +144,8 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
     checkIfUserExists,
     findUserByEmail,
     getUserById,
+    updateKYC,
+    addPin,
   };
 };
 
