@@ -10,6 +10,7 @@ const logger_1 = __importDefault(require("./logger"));
 exports.default = (app) => {
     app.use(endpoints_1.default.home, api_1.home);
     app.use(endpoints_1.default.users, api_1.users);
+    app.use(endpoints_1.default.auth, api_1.auth);
     logger_1.default.info('✌️ Routes Loaded');
 };
 //# sourceMappingURL=routes.js.map

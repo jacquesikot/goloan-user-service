@@ -1,6 +1,6 @@
 import logger from './logger';
 import { prisma } from './database';
-import { userService } from '../services';
+import { userService, authService } from '../services';
 import { IServiceInterface } from '../interfaces';
 
 const userServiceDepenedencies: IServiceInterface = {
@@ -9,9 +9,11 @@ const userServiceDepenedencies: IServiceInterface = {
 };
 
 const userServiceInstance = userService(userServiceDepenedencies);
+const authServiceInstance = authService(userServiceDepenedencies);
 
 export const container = {
   prisma: prisma,
   logger: logger,
   userService: userServiceInstance,
+  authService: authServiceInstance,
 };

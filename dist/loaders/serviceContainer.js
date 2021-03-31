@@ -12,9 +12,11 @@ const userServiceDepenedencies = {
     logger: logger_1.default,
 };
 const userServiceInstance = services_1.userService(userServiceDepenedencies);
+const authServiceInstance = services_1.authService(userServiceDepenedencies);
 exports.container = {
     prisma: database_1.prisma,
     logger: logger_1.default,
     userService: userServiceInstance,
+    authService: authServiceInstance,
 };
 //# sourceMappingURL=serviceContainer.js.map

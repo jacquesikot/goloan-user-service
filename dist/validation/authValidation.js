@@ -19,15 +19,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const dotenv = __importStar(require("dotenv"));
-const envFound = dotenv.config();
-if (envFound.error && process.env.NODE_ENV === 'development') {
-    throw new Error("⚠️  Couldn't find .env file  ⚠️");
-}
-exports.default = {
-    port: parseInt(process.env.PORT, 3000),
-    masterKey: process.env.MASTER_KEY ? process.env.MASTER_KEY : '',
-    mailgunApiKey: process.env.MAILGUN_API_KEY ? process.env.MAILGUN_API_KEY : '',
-    jwtKey: process.env.JWT_KEY ? process.env.JWT_KEY : '',
+const Joi = __importStar(require("joi"));
+const authValidation = (login) => {
+    const schema = Joi.object({
+        email: Joi.string().email().required(),
+        password: Joi.string().min(3).required(),
+    });
+    return schema.validate(login);
 };
-//# sourceMappingURL=index.js.map
+exports.default = authValidation;
+//# sourceMappingURL=authValidation.js.map

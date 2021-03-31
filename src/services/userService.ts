@@ -66,12 +66,13 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
 
   const findUserByEmail = async (user_email: string) => {
     try {
-      const user = prisma.users.findUnique({
+      const user = await prisma.users.findUnique({
         where: {
           email: user_email,
         },
       });
-      return user;
+      if (user) return user;
+      return false;
     } catch (error) {
       logger.error(error);
     }
@@ -79,7 +80,7 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
 
   const getUserById = async (user_id: string) => {
     try {
-      const user = prisma.users.findUnique({
+      const user = await prisma.users.findUnique({
         where: {
           id: user_id,
         },
