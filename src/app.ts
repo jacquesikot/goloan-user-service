@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 require('express-async-errors');
 import express from 'express';
 
@@ -18,8 +19,6 @@ process.on('unhandledRejection', (ex) => {
 
 const PORT = process.env.PORT || config.port;
 
-const server = app.listen(PORT, () =>
-  logger.info(`🛡️  User Service listening on port: ${PORT} 🛡️`)
-);
+const server = app.listen(PORT, () => logger.info(`🛡️  User Service listening on port: ${PORT} 🛡️`));
 
 export default server;

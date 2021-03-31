@@ -5,8 +5,8 @@
   "scripts": {
     "test": "jest -i --watchAll",
     "watch": "tsc -w",
-    "dev": "nodemon dist/index.js",
-    "start": "node dist/index.js",
+    "dev": "nodemon dist/app.js",
+    "start": "node dist/app.js",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"
   },
@@ -14,9 +14,6 @@
     "hooks": {
       "pre-commit": "yarn lint"
     }
-  },
-  "engines": {
-    "node": "14.16.0"
   },
   "keywords": [],
   "author": "Jacques Ikot",
