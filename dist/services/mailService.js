@@ -3,27 +3,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const loaders_1 = require("../loaders");
-const mailgun_js_1 = __importDefault(require("mailgun-js"));
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const googleapis_1 = require("googleapis");
+// import { logger } from '../loaders';
 const config_1 = __importDefault(require("../config"));
+const OAuth2 = googleapis_1.google.auth.OAuth2;
+const createTransporter = async () => {
+    const oauth2Client = new OAuth2(config_1.default.googleClientId, config_1.default.googleClientSecret, 'https://developers.google.com/oauthplayground');
+    oauth2Client.setCredentials({
+        refresh_token: config_1.default.googleRefreshToken,
+    });
+    const accessToken = await new Promise((resolve, reject) => {
+        oauth2Client.getAccessToken((err, token) => {
+            if (err) {
+                reject('Failed to create access token :(');
+            }
+            resolve(token);
+        });
+    });
+    const transporter = nodemailer_1.default.createTransport({
+        service: 'gmail',
+        auth: {
+            type: 'OAuth2',
+            user: config_1.default.googleMail,
+            accessToken,
+            clientId: config_1.default.googleClientId,
+            clientSecret: config_1.default.googleClientSecret,
+            refreshToken: config_1.default.googleRefreshToken,
+        },
+    });
+    return transporter;
+};
+const mailOptions = {
+    from: config_1.default.googleMail,
+    to: 'mariamabiola82@gmail.com',
+    subject: 'Welcome to Goloan',
+    text: 'welcome to goloan',
+};
 const mailService = () => {
-    const domain = 'https://app.mailgun.com/app/sending/domains/sandbox9e1f2ca8e8a54772a28b0eab85665d40.mailgun.org';
-    const fromWho = 'jacquesikot@gmail.com';
-    const mailgun = new mailgun_js_1.default({ apiKey: config_1.default.mailgunApiKey, domain: domain });
-    const data = {
-        from: fromWho,
-        to: 'jacquesikot@icloud.com',
-        subject: 'Hello from user service',
-        html: 'Hello, This is not a plain-text email, I wanted to test some spicy Mailgun sauce in NodeJS! <a href="http://0.0.0.0:3030/validate?' +
-            'jacquesikot@icloud.com' +
-            '">Click here to add your email address to a mailing list</a>',
-    };
     const sendMail = async () => {
         try {
-            await mailgun.messages().send(data);
+            const emailTransporter = await createTransporter();
+            await emailTransporter.sendMail(mailOptions);
         }
         catch (error) {
-            loaders_1.logger.error(error);
+            console.log(error);
         }
     };
     return {
