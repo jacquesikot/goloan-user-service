@@ -27,7 +27,7 @@ const validateUser = (user) => {
         phone_number: Joi.string().min(13).max(21).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(5).max(12).required(),
-        user_type: Joi.string().min(1).max(1),
+        user_type: Joi.string().required(),
     });
     return schema.validate(user);
 };

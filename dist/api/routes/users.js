@@ -29,14 +29,25 @@ router.post('/', async (req, res) => {
     const validation = validation_1.userValidation(req.body);
     if (validation.error)
         return res.status(400).send(constants_1.errorEnvelope.invalidRequest(validation.error));
-    const existingUser = await serviceContainer_1.container.userService.checkIfUserExists(req.body.email);
+    const existingUser = await serviceContainer_1.container.userService.findUserByEmail(req.body.email);
     if (existingUser)
         return res.status(400).send(constants_1.errorEnvelope.genericError(constants_1.errorMessage.userAlreadyRegistered, 400));
+    const existingPhone = await serviceContainer_1.container.userService.findUserByPhone(req.body.phone_number);
+    if (existingPhone)
+        return res.status(400).send(constants_1.errorEnvelope.genericError(constants_1.errorMessage.phoneNumberRegistered, 400));
     const newUser = await serviceContainer_1.container.userService.createUser(req.body);
-    res
-        .status(201)
-        .send(constants_1.responseEnvelope.single(_.pick(newUser, ['id', 'first_name', 'last_name', 'email', 'phone_number'])));
+    if (newUser) {
+        const token = await serviceContainer_1.container.authService.generateAuthToken(newUser);
+        const dataResponse = {
+            token,
+            ...newUser,
+        };
+        res
+            .status(201)
+            .send(constants_1.responseEnvelope.single(_.pick(dataResponse, ['id', 'first_name', 'last_name', 'email', 'phone_number', 'token'])));
+    }
 });
+// Check Microservices book for better way to implement this route
 router.post('/kyc', async (req, res) => {
     const validation = validation_1.kycValidation(req.body);
     if (validation.error)
