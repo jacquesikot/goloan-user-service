@@ -8,11 +8,10 @@ const client_1 = require("@prisma/client");
 const logger_1 = __importDefault(require("./logger"));
 const constants_1 = require("../constants");
 exports.prisma = new client_1.PrismaClient();
-exports.default = () => {
+exports.default = async () => {
     try {
-        exports.prisma.$connect();
+        await exports.prisma.$connect();
         logger_1.default.info('✌️ Database loaded and connected');
-        return;
     }
     catch (error) {
         logger_1.default.error(constants_1.errorMessage.noDatabaseConnection);

@@ -5,11 +5,10 @@ import { errorMessage } from '../constants';
 
 export const prisma = new PrismaClient();
 
-export default () => {
+export default async () => {
   try {
-    prisma.$connect();
+    await prisma.$connect();
     logger.info('✌️ Database loaded and connected');
-    return;
   } catch (error) {
     logger.error(errorMessage.noDatabaseConnection);
   }

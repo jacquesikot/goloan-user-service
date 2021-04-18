@@ -18,8 +18,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt = __importStar(require("bcrypt"));
+const events_1 = __importDefault(require("../events/events"));
 const userService = ({ prisma, logger }) => {
     const hashValue = async (value) => {
         try {
@@ -44,39 +48,24 @@ const userService = ({ prisma, logger }) => {
     };
     const createUser = async (user) => {
         var _a;
-        const { first_name, last_name, phone_number, email, gender, user_type, password } = user;
+        const { first_name, last_name, phone_number, email, user_type, password } = user;
         const safePassword = (_a = (await hashValue(password))) === null || _a === void 0 ? void 0 : _a.toString();
-        // Sort out user types
-        const userType = user_type ? user_type : 'standard';
         try {
-            const user = prisma.users.create({
+            const user = await prisma.users.create({
                 data: {
                     first_name,
                     last_name,
                     phone_number,
                     email,
                     password: safePassword,
-                    gender,
-                    user_type: userType,
+                    user_type,
                     created_at: new Date().toISOString(),
                 },
             });
-            return user;
-        }
-        catch (error) {
-            logger.error(error);
-        }
-    };
-    const checkIfUserExists = async (user_email) => {
-        try {
-            const foundUser = await prisma.users.findUnique({
-                where: {
-                    email: user_email,
-                },
-            });
-            if (!foundUser)
-                return false;
-            return true;
+            if (user) {
+                events_1.default.emailEvent.emit(events_1.default.onSignUp, user.email);
+                return user;
+            }
         }
         catch (error) {
             logger.error(error);
@@ -87,6 +76,21 @@ const userService = ({ prisma, logger }) => {
             const user = await prisma.users.findUnique({
                 where: {
                     email: user_email,
+                },
+            });
+            if (user)
+                return user;
+            return false;
+        }
+        catch (error) {
+            logger.error(error);
+        }
+    };
+    const findUserByPhone = async (phone_number) => {
+        try {
+            const user = await prisma.users.findUnique({
+                where: {
+                    phone_number,
                 },
             });
             if (user)
@@ -163,8 +167,8 @@ const userService = ({ prisma, logger }) => {
         hashValue,
         validatePassword,
         createUser,
-        checkIfUserExists,
         findUserByEmail,
+        findUserByPhone,
         getUserById,
         updateKYC,
         addPin,

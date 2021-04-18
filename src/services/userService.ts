@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { IUser, IServiceInterface } from '../interfaces';
+import events from '../events/events';
 
 const userService = ({ prisma, logger }: IServiceInterface) => {
   const hashValue = async (value: string) => {
@@ -23,42 +24,27 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
   };
 
   const createUser = async (user: IUser) => {
-    const { first_name, last_name, phone_number, email, gender, user_type, password } = user;
+    const { first_name, last_name, phone_number, email, user_type, password } = user;
 
     const safePassword = (await hashValue(password))?.toString();
-    // Sort out user types
-    const userType = user_type ? user_type : 'standard';
 
     try {
-      const user = prisma.users.create({
+      const user = await prisma.users.create({
         data: {
           first_name,
           last_name,
           phone_number,
           email,
           password: safePassword,
-          gender,
-          user_type: userType,
+          user_type,
           created_at: new Date().toISOString(),
         },
       });
 
-      return user;
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const checkIfUserExists = async (user_email: string) => {
-    try {
-      const foundUser = await prisma.users.findUnique({
-        where: {
-          email: user_email,
-        },
-      });
-
-      if (!foundUser) return false;
-      return true;
+      if (user) {
+        events.emailEvent.emit(events.onSignUp, user.email);
+        return user;
+      }
     } catch (error) {
       logger.error(error);
     }
@@ -69,6 +55,20 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
       const user = await prisma.users.findUnique({
         where: {
           email: user_email,
+        },
+      });
+      if (user) return user;
+      return false;
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const findUserByPhone = async (phone_number: string) => {
+    try {
+      const user = await prisma.users.findUnique({
+        where: {
+          phone_number,
         },
       });
       if (user) return user;
@@ -142,8 +142,8 @@ const userService = ({ prisma, logger }: IServiceInterface) => {
     hashValue,
     validatePassword,
     createUser,
-    checkIfUserExists,
     findUserByEmail,
+    findUserByPhone,
     getUserById,
     updateKYC,
     addPin,

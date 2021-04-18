@@ -8,6 +8,7 @@ const errorMessage = {
   userAlreadyRegistered: 'User with the given ID is already regisered',
   userDoesNotExist: 'User with given ID does not exist',
   invalidAuth: 'Invalid email and password',
+  phoneNumberRegistered: 'Phone number already registered',
 };
 
 const errorEnvelope = {

@@ -34,24 +34,24 @@ const createTransporter = async () => {
     });
     return transporter;
 };
-const mailOptions = {
-    from: config_1.default.googleMail,
-    to: 'mariamabiola82@gmail.com',
-    subject: 'Welcome to Goloan',
-    text: 'welcome to goloan',
-};
 const mailService = () => {
-    const sendMail = async () => {
+    const sendWelcomeMail = async (email) => {
+        const welcomeMailOptions = {
+            from: config_1.default.googleMail,
+            to: email,
+            subject: 'Welcome to Goloan',
+            text: '<h1>Welcoem to Goloan</h1>',
+        };
         try {
             const emailTransporter = await createTransporter();
-            await emailTransporter.sendMail(mailOptions);
+            await emailTransporter.sendMail(welcomeMailOptions);
         }
         catch (error) {
             console.log(error);
         }
     };
     return {
-        sendMail,
+        sendWelcomeMail,
     };
 };
 exports.default = mailService;
